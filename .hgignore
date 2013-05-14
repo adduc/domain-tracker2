@@ -1,4 +1,4 @@
 syntax: glob
 app/vendor
-app/config/config.toml.php
 logs
+app/config/config.ini.php
