@@ -1,0 +1,18 @@
+{
+    "name": "adduc/domain-tracker",
+    "authors": [
+        {
+            "name": "John S Long",
+            "email": "a@88k.us"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "app/src"
+        }
+    },
+    "config": {
+        "vendor-dir": "app/vendor",
+        "bin-dir": "app/vendor/bin"
+    }
+}

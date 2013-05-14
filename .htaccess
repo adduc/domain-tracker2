@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} !static
+RewriteCond %{REQUEST_URI} !index.php$
+RewriteRule ^(.*) index.php?path=$1 [NC,L]
+

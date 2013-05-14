@@ -1,0 +1,3 @@
+syntax: glob
+app/vendor
+app/config/config.toml.php
