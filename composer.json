@@ -14,5 +14,8 @@
     "config": {
         "vendor-dir": "app/vendor",
         "bin-dir": "app/vendor/bin"
+    },
+    "require": {
+        "doctrine/inflector": "v1.0"
     }
 }
