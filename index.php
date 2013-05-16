@@ -6,14 +6,14 @@ include('app/vendor/autoload.php');
 
 $params = explode("/", isset($_GET['p']) ? $_GET['p'] : '');
 $params = array_merge(array('','',''), $params);
+$params[0] = ltrim($params[0], "/");
 
 $config = parse_ini_file('app/config/config.ini.php', true);
-
 ob_start();
 
 try {
     $ns = __NAMESPACE__ . "\\Controller";
-    $class = "{$ns}\\" . Inflector::classify(ltrim($params[0], "/"));
+    $class = "{$ns}\\" . Inflector::classify($params) . "Controller";
 
     switch(true) {
         case !class_exists($class, true):
@@ -33,6 +33,17 @@ try {
     header('HTTP/1.0 404 Not Found');
     echo "404, dude.";
 
+    if(isset($config['errors']['display']) && $config['errors']['display']) {
+        echo "<br />Exception: ";
+        echo trim($e->getMessage()) ?: "<em>Not Provided</em>";
+
+        if(isset($config['errors']['verbose']) && $config['errors']['verbose']) {
+            echo "<pre>" . $e->getTraceAsString();
+            echo "\n\$_REQUEST: " . var_export($_REQUEST, true);
+            echo "\n\$_SERVER: " . var_export($_SERVER, true);
+        }
+    }
+
 } catch(Exception\Ex500 $e) {
 
     // Log useful info to file.
@@ -47,6 +58,17 @@ try {
     // Let user know something's up.
     header('HTTP/1.0 500 Internal Server Error');
     echo "Something went wrong. Could be the flux capacitor.";
+
+    if(isset($config['errors']['display']) && $config['errors']['display']) {
+        echo "<br />Exception: ";
+        echo trim($e->getMessage()) ?: "<em>Not Provided</em>";
+
+        if(isset($config['errors']['verbose']) && $config['errors']['verbose']) {
+            echo "<pre>" . $e->getTraceAsString();
+            echo "\n\$_REQUEST: " . var_export($_REQUEST, true);
+            echo "\n\$_SERVER: " . var_export($_SERVER, true);
+        }
+    }
 
 }
 
