@@ -21,7 +21,14 @@ $params = explode("/", isset($_GET['p']) ? $_GET['p'] : '');
 $params = array_merge(array('','',''), $params);
 $params[0] = ltrim($params[0], "/");
 
-$config = parse_ini_file('app/config/config.ini.php', true);
+$config_file = 'app/config/config.ini.php';
+$config = parse_ini_file($config_file, true);
+if(!$config) {
+    $config_sample = 'app/config/config.example.ini.php';
+    die("Couldn't find a config file. Mind copying {$config_sample}
+        to {$config_file} and sprucing it up a bit?");
+}
+
 ob_start();
 
 try {
