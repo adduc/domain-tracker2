@@ -17,9 +17,8 @@ function showException(\Exception $e, $config) {
 
 include('app/vendor/autoload.php');
 
-$params = explode("/", isset($_GET['p']) ? $_GET['p'] : '');
-$params = array_merge(array('','',''), $params);
-$params[0] = ltrim($params[0], "/");
+$params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : 'index');
+$params = $params + array('','','');
 
 $config_file = 'app/config/config.ini.php';
 $config = parse_ini_file($config_file, true);
