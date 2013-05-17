@@ -47,7 +47,7 @@ try {
     }
 
     $class = new $class($config);
-    $class->run($class, array_slice($params, 2));
+    $class->run($params[1], array_slice($params, 2));
 
 } catch(Exception\Ex404 $e) {
 
