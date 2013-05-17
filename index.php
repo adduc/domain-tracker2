@@ -38,7 +38,7 @@ ob_start();
 
 try {
     $ns = __NAMESPACE__ . "\\Controller";
-    $class = "{$ns}\\" . Inflector::classify($params) . "Controller";
+    $class = "{$ns}\\" . Inflector::classify($params[0]) . "Controller";
 
     switch(true) {
         case !class_exists($class, true):
