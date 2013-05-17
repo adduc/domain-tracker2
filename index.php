@@ -43,7 +43,8 @@ try {
     switch(true) {
         case !class_exists($class, true):
         case !is_subclass_of($class, "{$ns}\\Controller"):
-            throw new Exception\NotFoundException();
+            $msg = "{$class} does not exist.";
+            throw new Exception\NotFoundException($msg);
     }
 
     $class = new $class($config);
