@@ -5,7 +5,7 @@ use Doctrine\Common\Inflector\Inflector;
 function showException(\Exception $e, $config) {
     if(isset($config['errors']['display']) && $config['errors']['display']) {
         echo "<br />Exception: ";
-        echo trim($e->getMessage()) ?: "<em>Description Not Provided</em>";
+        echo htmlentities(trim($e->getMessage())) ?: "<em>Description Not Provided</em>";
 
         if(isset($config['errors']['verbose']) && $config['errors']['verbose']) {
             echo "<pre>" . $e->getTraceAsString();
