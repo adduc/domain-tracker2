@@ -29,6 +29,12 @@ if(!$config) {
         to {$config_file} and sprucing it up a bit?");
 }
 
+// Set error display/reporting based on config settings
+isset($config['errors']['display'])
+    && ini_set('display_errors', $config['errors']['display'] ? 1 : 0);
+isset($config['errors']['level'])
+    && error_reporting($config['errors']['level']);
+
 ob_start();
 
 try {
