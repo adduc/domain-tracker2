@@ -1,4 +1,4 @@
 syntax: glob
 app/vendor
 logs
-app/config/config.ini.php
+config/config.ini.php

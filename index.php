@@ -20,7 +20,7 @@ include('app/vendor/autoload.php');
 $params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : 'index');
 $params = $params + array('','','');
 
-$config_file = 'app/config/config.ini.php';
+$config_file = 'config/config.ini.php';
 $config = parse_ini_file($config_file, true);
 if(!$config) {
     $config_sample = 'app/config/config.example.ini.php';
