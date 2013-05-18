@@ -2,3 +2,5 @@ syntax: glob
 app/vendor
 logs
 config/config.ini.php
+config/nginx-phpfpm/nginx.conf
+config/nginx-phpfpm/phpfpm.conf
