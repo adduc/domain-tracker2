@@ -17,7 +17,7 @@ function showException(\Exception $e, $config) {
 
 include('app/vendor/autoload.php');
 
-$params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : 'index');
+$params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : '');
 $params = $params + array('','','');
 
 $config_file = 'config/config.ini.php';
@@ -38,7 +38,8 @@ ob_start();
 
 try {
     $ns = __NAMESPACE__ . "\\Controller";
-    $class = "{$ns}\\" . Inflector::classify($params[0]) . "Controller";
+    $class = Inflector::classify($params[0] ?: 'index');
+    $class = "{$ns}\\{$class}Controller";
 
     switch(true) {
         case !class_exists($class, true):
