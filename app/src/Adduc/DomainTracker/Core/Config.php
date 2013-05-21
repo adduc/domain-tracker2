@@ -21,6 +21,16 @@ class Config {
         )
     );
 
+    public function loadFile($file) {
+        $config = parse_ini_file($file, true);
+        if(!$config) {
+            $msg = "Config file doesn't exist or is not readable.";
+            throw new Exception\Ex500($msg);
+        }
+
+        $this->set($config);
+    }
+
     /**
      * Set config setting
      *
@@ -40,12 +50,17 @@ class Config {
         }
 
         // Explode by dot (.) to walk to config setting.
-        $config = &$this->config;
-        $key = explode('.', $key);
-        while($key) {
-            var_dump($key);
-            exit;
+        $current_value = &$this->config;
+        $path = explode('.', $key);
+        while($path) {
+            $current_key = array_shift($path);
+            if(!isset($current_value[$current_key])) {
+                throw new \InvalidArgumentException("Setting {$key} does not exist.");
+            }
+            $current_value = &$current_value[$current_key];
         }
+
+        $current_value = $value;
     }
 
     /**

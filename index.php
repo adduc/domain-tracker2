@@ -2,12 +2,12 @@
 namespace Adduc\DomainTracker;
 use Doctrine\Common\Inflector\Inflector;
 
-function showException(\Exception $e, $config) {
-    if(isset($config['errors']['display']) && $config['errors']['display']) {
+function showException(\Exception $e, Core\Config $config) {
+    if($config->get('errors.display')) {
         echo "<br />Exception: ";
         echo htmlentities(trim($e->getMessage())) ?: "<em>Description Not Provided</em>";
 
-        if(isset($config['errors']['verbose']) && $config['errors']['verbose']) {
+        if($config->get('errors.verbose')) {
             echo "<pre>" . $e->getTraceAsString();
             echo "\n\$_REQUEST: " . var_export($_REQUEST, true);
             echo "\n\$_SERVER: " . var_export($_SERVER, true);
@@ -20,23 +20,17 @@ include('app/vendor/autoload.php');
 $params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : '');
 $params = $params + array('','','');
 
-$config_file = 'config/config.ini.php';
-$config = parse_ini_file($config_file, true);
-if(!$config) {
-    $config_sample = 'app/config/config.example.ini.php';
-    die("Couldn't find a config file. Mind copying {$config_sample}
-        to {$config_file} and sprucing it up a bit?");
-}
-
-// Set error display/reporting based on config settings
-isset($config['errors']['display'])
-    && ini_set('display_errors', $config['errors']['display'] ? 1 : 0);
-isset($config['errors']['level'])
-    && error_reporting($config['errors']['level']);
-
-ob_start();
-
 try {
+
+    $config = new Core\Config();
+    $config->loadFile('config/config.ini.php');
+
+    // Set error display/reporting based on config settings
+    ini_set('display_errors', $config->get('errors.display') ? 1 : 0);
+    error_reporting($config->get('errors.level'));
+
+    ob_start();
+
     $ns = __NAMESPACE__ . "\\Controller";
     $class = Inflector::classify($params[0] ?: 'index');
     $class = "{$ns}\\{$class}Controller";

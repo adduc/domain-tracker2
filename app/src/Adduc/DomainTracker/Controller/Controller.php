@@ -2,6 +2,7 @@
 namespace Adduc\DomainTracker\Controller;
 use Doctrine\Common\Inflector\Inflector;
 use Adduc\DomainTracker\Exception;
+use Adduc\DomainTracker\Core\Config;
 
 abstract class Controller {
 
@@ -11,8 +12,8 @@ abstract class Controller {
         $layout,
         $viewVars;
 
-    public function __construct(array &$config = array()) {
-        $this->config = $config;
+    public function __construct(Config $config = null) {
+        $this->config = $config ?: new Config();
     }
 
     public function run($action, array $params) {
@@ -29,6 +30,14 @@ abstract class Controller {
         is_null($view) && $view = $this->view;
         is_null($layout) && $layout = $this->layout;
 
+    }
+
+    public function getConfig() {
+        return $this->config;
+    }
+
+    public function setConfig(Config $config) {
+        $this->config = $config;
     }
 
 }
