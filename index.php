@@ -31,19 +31,9 @@ try {
 
     ob_start();
 
-    $ns = __NAMESPACE__ . "\\Controller";
-    $class = Inflector::classify($params[0] ?: 'index');
-    $class = "{$ns}\\{$class}Controller";
-
-    switch(true) {
-        case !class_exists($class, true):
-        case !is_subclass_of($class, "{$ns}\\Controller"):
-            $msg = "{$class} does not exist.";
-            throw new Exception\NotFoundException($msg);
-    }
-
-    $class = new $class($config);
-    $class->run($params[1] ?: 'index', array_slice($params, 2));
+    $controller = new Controller\Controller($config);
+    $controller = $controller->getController($params[0] ?: 'index');
+    $controller->run($params[1] ?: 'index', array_slice($params, 2));
 
 } catch(Exception\Ex404 $e) {
 

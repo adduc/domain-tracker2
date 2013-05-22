@@ -4,7 +4,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Adduc\DomainTracker\Exception;
 use Adduc\DomainTracker\Core\Config;
 
-abstract class Controller {
+class Controller {
 
     protected
         $config,
@@ -38,6 +38,19 @@ abstract class Controller {
 
     public function setConfig(Config $config) {
         $this->config = $config;
+    }
+
+    public function getController($controller) {
+        $class = Inflector::classify($controller);
+        $class = __NAMESPACE__  . "\\{$class}Controller";
+        switch(true) {
+            case !class_exists($class, true):
+            case !is_subclass_of($class, __CLASS__):
+                $msg = "{$class} does not exist.";
+                throw new Exception\NotFoundException($msg);
+        }
+
+        return new $class($this->config);
     }
 
 }
