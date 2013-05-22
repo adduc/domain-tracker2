@@ -1,8 +1,8 @@
 <?php
 namespace Adduc\DomainTracker\Controller;
-use Doctrine\Common\Inflector\Inflector;
 use Adduc\DomainTracker\Exception;
-use Adduc\DomainTracker\Core\Config;
+use Adduc\DomainTracker\Core;
+use Doctrine\Common\Inflector\Inflector;
 
 class Controller {
 
@@ -10,10 +10,10 @@ class Controller {
         $config,
         $view,
         $layout,
-        $viewVars;
+        $view_vars;
 
-    public function __construct(Config $config = null) {
-        $this->config = $config ?: new Config();
+    public function __construct(Core\Config $config = null) {
+        $this->config = $config ?: new Core\Config();
     }
 
     public function run($action, array $params) {
@@ -21,6 +21,12 @@ class Controller {
         if(!method_exists($this, $action)) {
             throw new Exception\Ex404("{$action} does not exist.");
         }
+
+        $class = Inflector::tableize(substr(get_called_class(),
+            strlen(__NAMESPACE__) + 1, -strlen('Controller')));
+
+        $this->view = "{$class}/{$action}";
+        $this->layout = "layout/default";
 
         $this->$action();
         $this->render();
@@ -30,6 +36,15 @@ class Controller {
         is_null($view) && $view = $this->view;
         is_null($layout) && $layout = $this->layout;
 
+        $vc = new Core\View($this->config);
+        $output = $view
+            ? $vc->render($view, $this->view_vars)
+            : null;
+        $output = $layout
+            ? $vc->render($layout, $this->view_vars, $output)
+            : $output;
+
+        echo $output;
     }
 
     public function getConfig() {
