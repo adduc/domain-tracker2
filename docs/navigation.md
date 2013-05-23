@@ -1,31 +1,51 @@
 Navigation
 ==========
 
-/ - index:index
+IndexController
 -----
 
+### Action: Index - /
 Landing page. If individual has session, move them to logged in page.
 
 
-/dashboard - dashboard:index
+DashboardController
 -----
 
+### Action: Index - /dashboard
 Logged in user's dashboard. Displays activity feed
 
 
-/domain - domain:index
+DomainController
 -----
 
+### Action: Index - /domain
 List followed domains, allow adding additional domains.
 
+### Action: Add - /domain/add
+Add Domain for tracking
 
-/user - user:index
+### Action: View - /domain/view
+View Domain details, history, etc.
+
+
+UserController
 -----
 
-List followed users, allow following additional users.
+### Action: Index - /user - GET
+List followed users
+
+### Action: Follow - /user/follow - POST
+Follow user
+
+### Action: Unfollow - /user/unfollow - POST
+Unfollow user
 
 
-/settings - settings:index
+SettingController
 -----
 
-List account settings, allow editing (visibility, password, etc.)
+### Action: Index - /settings - GET
+List account settings
+
+### Action: Edit - /settings/edit - GET/POST
+Edit account settings (visibility, password, etc.)
