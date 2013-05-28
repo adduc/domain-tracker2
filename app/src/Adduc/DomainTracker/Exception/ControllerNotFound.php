@@ -2,4 +2,4 @@
 
 namespace Adduc\DomainTracker\Exception;
 
-class NotFoundException extends Ex404 {}
+class ControllerNotFound extends Ex404 {}
