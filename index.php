@@ -24,7 +24,9 @@ try {
 } catch(\Exception $e) {
 
     // Clean up output, if any
-    ob_get_clean();
+    while($c = ob_get_status()) {
+        ob_end_clean();
+    }
 
     if($e instanceof Exception\Ex404) {
 
@@ -62,4 +64,7 @@ try {
 
 }
 
-ob_end_flush();
+// Clean up output, if any
+while($c = ob_get_status()) {
+    ob_end_clean();
+}
