@@ -2,6 +2,7 @@
 namespace Adduc\DomainTracker\Controller;
 use Adduc\DomainTracker\Exception;
 use Adduc\DomainTracker\Core;
+use Adduc\DomainTracker\Model;
 use Doctrine\Common\Inflector\Inflector;
 
 class Controller {
@@ -10,7 +11,8 @@ class Controller {
         $config,
         $view,
         $layout,
-        $view_vars;
+        $view_vars,
+        $model;
 
     public function __construct(Core\Config $config = null) {
         $this->config = $config ?: new Core\Config();
@@ -66,6 +68,20 @@ class Controller {
         }
 
         return new $class($this->config);
+    }
+
+    public function redirect($location) {
+        ob_end_clean();
+        header($location);
+        exit;
+    }
+
+    public function getModel($model) {
+        if(!isset($this->model)) {
+            $this->model = new Model\Model($this->config);
+        }
+
+        return $this->model->getModel($model);
     }
 
 }
