@@ -64,7 +64,7 @@ class Controller {
             case !class_exists($class, true):
             case !is_subclass_of($class, __CLASS__):
                 $msg = "{$class} does not exist.";
-                throw new Exception\NotFoundException($msg);
+                throw new Exception\ControllerNotFound($msg);
         }
 
         return new $class($this->config);
