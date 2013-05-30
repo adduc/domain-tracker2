@@ -66,5 +66,5 @@ try {
 
 // Clean up output, if any
 while($c = ob_get_status()) {
-    ob_end_clean();
+    ob_end_flush();
 }
