@@ -5,6 +5,7 @@
 [paths]
 root = "disk location"
 url = "url to app root"
+templates = "templates"
 
 [errors]
 display = true

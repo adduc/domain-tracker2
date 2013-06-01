@@ -11,15 +11,24 @@ class Controller {
         $config,
         $view,
         $layout,
-        $view_vars,
+        $view_vars = array(),
         $model;
 
     public function __construct(Core\Config $config = null) {
         $this->config = $config ?: new Core\Config();
     }
 
+    public function beforeRender() {
+
+    }
+
+    public function beforeAction() {
+
+    }
+
     public function run($action, array $params) {
-        $action = Inflector::camelize($action) . "Action";
+        $base_action = Inflector::camelize($action);
+        $action = "{$base_action}Action";
         if(!method_exists($this, $action)) {
             throw new Exception\Ex404("{$action} does not exist.");
         }
@@ -27,10 +36,12 @@ class Controller {
         $class = Inflector::tableize(substr(get_called_class(),
             strlen(__NAMESPACE__) + 1, -strlen('Controller')));
 
-        $this->view = "{$class}/{$action}";
-        $this->layout = "layout/default";
+        $this->view = "{$class}/{$base_action}";
+        $this->layout = "layouts/default";
 
+        $this->beforeAction();
         $this->$action();
+        $this->beforeRender();
         $this->render();
     }
 
@@ -42,8 +53,9 @@ class Controller {
         $output = $view
             ? $vc->render($view, $this->view_vars)
             : null;
+        $this->view_vars['view'] = $output;
         $output = $layout
-            ? $vc->render($layout, $this->view_vars, $output)
+            ? $vc->render($layout, $this->view_vars)
             : $output;
 
         echo $output;
