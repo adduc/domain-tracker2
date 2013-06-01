@@ -6,6 +6,10 @@ class Container implements \ArrayAccess {
 
     protected $data = null;
 
+    public function __construct(array $data = array()) {
+        is_array($data) && $this->offsetSet($data);
+    }
+
     public function offsetExists($offset) {
         return is_null($this->offsetGet($offset));
     }
