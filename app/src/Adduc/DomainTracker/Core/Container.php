@@ -4,10 +4,10 @@ namespace Adduc\DomainTracker\Core;
 
 class Container implements \ArrayAccess {
 
-    protected $data = null;
+    protected $data = array();
 
-    public function __construct(array $data = array()) {
-        is_array($data) && $this->offsetSet($data);
+    public function __construct(array $data = null) {
+        is_array($data) && $this->offsetSet(null, $data);
     }
 
     public function offsetExists($offset) {
