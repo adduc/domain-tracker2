@@ -2,14 +2,16 @@
 namespace Adduc\DomainTracker;
 use Doctrine\Common\Inflector\Inflector;
 
-include('app/vendor/autoload.php');
+$app_root = dirname(__DIR__);
+
+include("{$app_root}/vendor/autoload.php");
 
 $params = explode("/", isset($_GET['p']) ? ltrim($_GET['p'], '/') : '');
 $params = $params + array('','','');
 
 try {
 
-    $config = new Core\Config('config/config.ini.php');
+    $config = new Core\Config("{$app_root}/config/config.ini.php");
 
     // Set error display/reporting based on config settings
     ini_set('display_errors', $config['errors.display'] ? 1 : 0);
